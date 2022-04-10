@@ -24,7 +24,6 @@ public class Bank {
         if(amount >= 0) {
             balance += amount;
             transactionHistory.add("Credit of " + amount + " from Bank " + bankName);
-            System.out.println("Balance after credit " + balance);
         }
     }
 
@@ -32,16 +31,10 @@ public class Bank {
         if(balance >= amount) {
             balance -= amount;
             transactionHistory.add("Debit of " + amount + " to Bank " + bankName);
-            System.out.println("Balance after debit " + balance);
         } else System.out.println("You can not withdraw " + amount
                 + ", your balance is " + balance);
     }
 
-    public void getBankStatement() {
-        for (String s : transactionHistory) {
-            System.out.println(s);
-        }
-    }
 
     public String getName() {
         return name;
@@ -55,7 +48,7 @@ public class Bank {
         this.id = id;
     }
 
-    public Double getBalance() {
+    public synchronized Double getBalance() {
         return balance;
     }
 
@@ -67,7 +60,7 @@ public class Bank {
         balance = balance;
     }
 
-    public List<String> getTransactionHistory() {
+    public synchronized List<String> getTransactionHistory() {
         return transactionHistory;
     }
 

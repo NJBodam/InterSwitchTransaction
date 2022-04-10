@@ -26,18 +26,19 @@ public class Main {
         Switch t3 = new Switch(bankA, bankB, "Debit", 5000D);
 
         t1.start();
-        t1.join();
         t2.start();
-        t2.join();
         t3.start();
-        t3.join();
+
+        System.out.println(">>>>>>" + Switch.getBankStatement(bankA));
+        System.out.println(">>>>>>" + Switch.getBankStatement(bankB));
 
 
-        System.out.println(bankA.getName() + ">>>>>" + bankA.getTransactionHistory());
-        System.out.println(bankB.getName() + ">>>>>" + bankB.getTransactionHistory());
-       // bankB.getBankStatement();
-        System.out.println(bankA.getName() + ">>>" + bankA.getBalance());
-        System.out.println(bankB.getName() + ">>>" + bankB.getBalance());
+//        System.out.println(bankA.getName() + ">>>>>" + bankA.getTransactionHistory());
+//        System.out.println(bankB.getName() + ">>>>>" + bankB.getTransactionHistory());
+
+          //bankA.getBankStatement();
+//        System.out.println(bankA.getName() + ">>>" + bankA.getBalance());
+//        System.out.println(bankB.getName() + ">>>" + bankB.getBalance());
 
 
 
