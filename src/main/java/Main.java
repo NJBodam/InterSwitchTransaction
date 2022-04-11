@@ -36,6 +36,13 @@ public class Main {
         threads(t1, t2, t3, t4, t5);
         threads(t6, t7, t8, t9, t10);
 
+//        t1.start();
+//        t2.start();
+//        t3.start();
+//        t4.start();
+//        t5.start();
+//        t6.start(); t7.start(); t8.start(); t9.start(); t10.start();
+
         System.out.println(">>>>>>" + Switch.getBankStatement(bankA));
         System.out.println(">>>>>>" + Switch.getBankStatement(bankB));
 

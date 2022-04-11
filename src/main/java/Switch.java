@@ -21,8 +21,8 @@ public class Switch extends Thread{
 
         if(transactionType.equals("Debit")) {
             if (amount <= bankA.getBalance()) {
-                bankA.debit(amount, bankB.getName());
-                bankB.credit(amount, bankA.getName());
+                bankA.transact(transactionType, amount, bankB.getName());
+                bankB.transact("Credit", amount, bankA.getName());
                 bankStatement.put(bankA.getName(), bankA.getTransactionHistory());
                 bankStatement.put(bankB.getName(), bankB.getTransactionHistory());
                 System.err.println(Thread.currentThread() + " Transaction Successful");
@@ -31,10 +31,11 @@ public class Switch extends Thread{
                         + ". Bank Balances: " + bankA.getName() + " :" + bankA.getBalance() + ". " +bankB.getName() + " :" + bankB.getBalance());
             }
 
+
         } else if(transactionType.equals("Credit")) {
             if (amount <= bankB.getBalance()) {
-                bankA.credit(amount, bankB.getName());
-                bankB.debit(amount, bankA.getName());
+                bankA.transact(transactionType, amount, bankB.getName());
+                bankB.transact("Debit", amount, bankA.getName());
                 bankStatement.put(bankA.getName(), bankA.getTransactionHistory());
                 bankStatement.put(bankB.getName(), bankB.getTransactionHistory());
                 System.err.println(Thread.currentThread() + " Transaction Successful");
@@ -42,6 +43,7 @@ public class Switch extends Thread{
                 System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankB.getName() + " to " + bankA.getName()
                         + ". Bank Balances: " + bankA.getName() + " :" + bankA.getBalance() + ". " +bankB.getName() + " :" + bankB.getBalance());
             }
+
         } else System.err.println("Invalid Transaction Type");
     }
 
@@ -50,6 +52,8 @@ public class Switch extends Thread{
     }
 
     public synchronized static List<String> getBankStatement(Bank bank) {
+        // Try block to check for exceptions
+
         return bankStatement.get(bank.getName());
     }
 

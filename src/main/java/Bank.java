@@ -3,7 +3,7 @@ import java.util.List;
 public class Bank {
     private Long id;
     private String name;
-    private int balance;
+    private volatile int balance;
     private List<String> transactionHistory;
 
     public Bank(Long id, String name, int balance, List<String> transactionHistory) {
@@ -19,20 +19,22 @@ public class Bank {
     }
 
 
-
-    synchronized void credit(int amount, String bankName) {
-        if(amount > 0) {
-            balance += amount;
-            transactionHistory.add("Credit of " + amount + " from Bank " + bankName);
-        } else System.out.println("Put in the amount to transfer");
+    synchronized void transact(String transactionType, int amount, String bankName) {
+        if (transactionType.equals("Credit")) {
+            credit(amount, bankName);
+        } else if (transactionType.equals("Debit")) {
+            debit(amount, bankName);
+        }
     }
 
-    synchronized void debit(int amount, String bankName) {
-        if(balance >= amount) {
+    private void credit(int amount, String bankName) {
+            balance += amount;
+            transactionHistory.add("Credit of " + amount + " from Bank " + bankName + ". Bank balance: " + balance);
+    }
+
+    private void debit(int amount, String bankName) {
             balance -= amount;
-            transactionHistory.add("Debit of " + amount + " to Bank " + bankName);
-        } else System.out.println("You can not withdraw " + amount
-                + ", your balance is " + balance);
+            transactionHistory.add("Debit of " + amount + " to Bank " + bankName + "Bank balance: " + balance);
     }
 
 
