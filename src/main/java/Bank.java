@@ -34,7 +34,7 @@ public class Bank {
 
     private void debit(int amount, String bankName) {
             balance -= amount;
-            transactionHistory.add("Debit of " + amount + " to Bank " + bankName + "Bank balance: " + balance);
+            transactionHistory.add("Debit of " + amount + " to Bank " + bankName + ". Bank balance: " + balance);
     }
 
 
