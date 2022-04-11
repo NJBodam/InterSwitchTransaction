@@ -7,17 +7,17 @@ public class Switch extends Thread{
     private final Bank bankA;
     private final Bank bankB;
     private final String transactionType;
-    private final Long amount;
+    private final int amount;
     private static final Hashtable<String, List<String>> bankStatement = new Hashtable<>();
 
-    public Switch(Bank bankA, Bank bankB, String transactionType, Long amount) {
+    public Switch(Bank bankA, Bank bankB, String transactionType, int amount) {
         this.bankA = bankA;
         this.bankB = bankB;
         this.transactionType = transactionType;
         this.amount = amount;
     }
 
-    public synchronized static void transact(String transactionType, Long amount, Bank bankA, Bank bankB) {
+    public synchronized static void transact(String transactionType, int amount, Bank bankA, Bank bankB) {
 
         if(transactionType.equals("Debit")) {
             if (amount <= bankA.getBalance()) {
@@ -27,7 +27,8 @@ public class Switch extends Thread{
                 bankStatement.put(bankB.getName(), bankB.getTransactionHistory());
                 System.err.println(Thread.currentThread() + " Transaction Successful");
             } else {
-                System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankA.getName() + " to " + bankB.getName());
+                System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankA.getName() + " to " + bankB.getName()
+                        + ". Bank Balances: " + bankA.getName() + " :" + bankA.getBalance() + ". " +bankB.getName() + " :" + bankB.getBalance());
             }
 
         } else if(transactionType.equals("Credit")) {
@@ -38,7 +39,8 @@ public class Switch extends Thread{
                 bankStatement.put(bankB.getName(), bankB.getTransactionHistory());
                 System.err.println(Thread.currentThread() + " Transaction Successful");
             } else {
-                System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankB.getName() + " to " + bankA.getName());
+                System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankB.getName() + " to " + bankA.getName()
+                        + ". Bank Balances: " + bankA.getName() + " :" + bankA.getBalance() + ". " +bankB.getName() + " :" + bankB.getBalance());
             }
         } else System.err.println("Invalid Transaction Type");
     }
