@@ -33,9 +33,11 @@ public class Main {
        Switch t10 = new Switch(bankA, bankB, "Credit", 10000);
 
 
+       // These are the threads with the .join() that achieves synchronicity
         threads(t1, t2, t3, t4, t5);
         threads(t6, t7, t8, t9, t10);
 
+        // These are the threads without .join(), they have synchronized methods within
 //        t1.start();
 //        t2.start();
 //        t3.start();
