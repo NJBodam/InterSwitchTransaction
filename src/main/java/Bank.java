@@ -3,10 +3,10 @@ import java.util.List;
 public class Bank {
     private Long id;
     private String name;
-    private Double balance;
+    private Long balance;
     private List<String> transactionHistory;
 
-    public Bank(Long id, String name, Double balance, List<String> transactionHistory) {
+    public Bank(Long id, String name, Long balance, List<String> transactionHistory) {
         this.id = id;
         this.name = name;
         this.balance = balance;
@@ -20,14 +20,14 @@ public class Bank {
 
 
 
-    synchronized void credit(Double amount, String bankName) {
-        if(amount >= 0) {
+    synchronized void credit(Long amount, String bankName) {
+        if(amount > 0) {
             balance += amount;
             transactionHistory.add("Credit of " + amount + " from Bank " + bankName);
         }
     }
 
-    synchronized void debit(Double amount, String bankName) {
+    synchronized void debit(Long amount, String bankName) {
         if(balance >= amount) {
             balance -= amount;
             transactionHistory.add("Debit of " + amount + " to Bank " + bankName);
@@ -48,7 +48,7 @@ public class Bank {
         this.id = id;
     }
 
-    public synchronized Double getBalance() {
+    public synchronized Long getBalance() {
         return balance;
     }
 
@@ -56,7 +56,7 @@ public class Bank {
         this.transactionHistory = transactionHistory;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(Long balance) {
         balance = balance;
     }
 

@@ -7,71 +7,40 @@ public class Switch extends Thread{
     private final Bank bankA;
     private final Bank bankB;
     private final String transactionType;
-    private final Double amount;
+    private final Long amount;
     private static final Hashtable<String, List<String>> bankStatement = new Hashtable<>();
 
-    public Switch(Bank bankA, Bank bankB, String transactionType, Double amount) {
+    public Switch(Bank bankA, Bank bankB, String transactionType, Long amount) {
         this.bankA = bankA;
         this.bankB = bankB;
         this.transactionType = transactionType;
         this.amount = amount;
     }
 
-    public synchronized static void transact(String transactionType, Double amount, Bank bankA, Bank bankB) {
-        List<String> tempHist = new ArrayList<>();
-
+    public synchronized static void transact(String transactionType, Long amount, Bank bankA, Bank bankB) {
 
         if(transactionType.equals("Debit")) {
-            bankA.debit(amount, bankB.getName());
-            bankB.credit(amount, bankA.getName());
-
-
-            if (bankStatement.containsKey(bankA.getName())) {
-                tempHist = bankStatement.get(bankA.getName());
-                tempHist.add(s + amount + s2 + bankA.getName());
-                bankStatement.replace(bankB.getName(), tempHist);
+            if (amount <= bankA.getBalance()) {
+                bankA.debit(amount, bankB.getName());
+                bankB.credit(amount, bankA.getName());
+                bankStatement.put(bankA.getName(), bankA.getTransactionHistory());
+                bankStatement.put(bankB.getName(), bankB.getTransactionHistory());
+                System.err.println(Thread.currentThread() + " Transaction Successful");
             } else {
-                tempHist.add(s + amount + s2 + bankB.getName());
-                bankStatement.putIfAbsent(bankB.getName(), tempHist);
+                System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankA.getName() + " to " + bankB.getName());
             }
 
-
-//            bankStatementFill(amount, bankB, bankA, tempHist, "Debit of ", " to ");
-//
-//         //   bankStatementFill(amount, bankA, bankB, tempHist, "Credit of ", " from ");
-
         } else if(transactionType.equals("Credit")) {
-            bankA.credit(amount, bankB.getName());
-            bankB.debit(amount, bankA.getName());
-
-            bankStatementFill(amount, bankB, bankA, tempHist, "Credit of ", " from ");
-
-            //bankStatementFill(amount, bankA, bankB, tempHist, "Debit of ", " to ");
-
-        } else System.out.println("Invalid Transaction Type");
-    }
-
-    private static void bankStatementFill(Double amount, Bank bankA, Bank bankB, List<String> tempHist, String s, String s2) {
-        if (bankStatement.containsKey(bankB.getName())) {
-            tempHist = bankStatement.get(bankB.getName());
-            tempHist.add(s + amount + s2 + bankA.getName());
-            bankStatement.replace(bankB.getName(), tempHist);
-        } else {
-            tempHist.add(s + amount + s2 + bankB.getName());
-            bankStatement.putIfAbsent(bankB.getName(), tempHist);
-        }
-
-        if (bankStatement.containsKey(bankA.getName())) {
-            tempHist = bankStatement.get(bankA.getName());
-            tempHist.add(s + amount + s2 + bankB.getName());
-            bankStatement.replace(bankA.getName(), tempHist);
-        } else {
-            tempHist.add(s + amount + s2 + bankB.getName());
-            bankStatement.putIfAbsent(bankA.getName(), tempHist);
-        }
-
-
-
+            if (amount <= bankB.getBalance()) {
+                bankA.credit(amount, bankB.getName());
+                bankB.debit(amount, bankA.getName());
+                bankStatement.put(bankA.getName(), bankA.getTransactionHistory());
+                bankStatement.put(bankB.getName(), bankB.getTransactionHistory());
+                System.err.println(Thread.currentThread() + " Transaction Successful");
+            } else {
+                System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankB.getName() + " to " + bankA.getName());
+            }
+        } else System.err.println("Invalid Transaction Type");
     }
 
     public synchronized static Hashtable<String, List<String>> getSwitchStatement() {
@@ -79,9 +48,7 @@ public class Switch extends Thread{
     }
 
     public synchronized static List<String> getBankStatement(Bank bank) {
-        List<String> transactionHistory = bankStatement.get(bank.getName());
-        transactionHistory.add("Bank balance for " + bank.getName() + " is " + bank.getBalance());
-        return transactionHistory;
+        return bankStatement.get(bank.getName());
     }
 
     public void run() {
