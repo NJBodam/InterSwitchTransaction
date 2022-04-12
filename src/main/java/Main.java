@@ -48,7 +48,7 @@ public class Main {
         System.out.println(">>>>>>" + Switch.getBankStatement(bankA));
         System.out.println(">>>>>>" + Switch.getBankStatement(bankB));
 
-        System.out.println("Bank A Balane: " + bankA.getBalance());
+        System.out.println("Bank A Balance: " + bankA.getBalance());
         System.out.println("Bank B Balance: " + bankB.getBalance());
 
 
