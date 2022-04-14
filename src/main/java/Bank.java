@@ -29,12 +29,12 @@ public class Bank {
 
     private void credit(int amount, String bankName) {
             balance += amount;
-            transactionHistory.add("Credit of " + amount + " from Bank " + bankName + ". Bank balance: " + balance);
+            transactionHistory.add("Credit of " + amount + " from Bank " + bankName + ". Bank balance: " + balance + ";");
     }
 
     private void debit(int amount, String bankName) {
             balance -= amount;
-            transactionHistory.add("Debit of " + amount + " to Bank " + bankName + ". Bank balance: " + balance);
+            transactionHistory.add("Debit of " + amount + " to Bank " + bankName + ". Bank balance: " + balance + ";");
     }
 
 
