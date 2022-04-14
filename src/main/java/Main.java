@@ -43,6 +43,7 @@ public class Main {
         Switch t18 = new Switch(bankC, bankA, "Credit", 5000);
         Switch t19 = new Switch(bankC, bankB, "Debit", 5000);
         Switch t20 = new Switch(bankA, bankB, "Credit", 10000);
+        Switch t21 = new Switch(bankA, bankB, "Credit", 50000);
 
 
 
@@ -51,6 +52,8 @@ public class Main {
         threads(t6, t7, t8, t9, t10);
         threads(t11, t12, t13, t14, t15);
         threads(t16, t17, t18, t19, t20);
+    //    t21.start();
+   //     t21.join();
 
         // These are the threads without .join(), they have synchronized methods within
 //        t1.start();
@@ -58,7 +61,8 @@ public class Main {
 //        t3.start();
 //        t4.start();
 //        t5.start();
-//        t6.start(); t7.start(); t8.start(); t9.start(); t10.start();
+//        t6.start(); t7.start(); t8.start(); t9.start();
+        // t10.start();
 
         System.out.println(">>>>>>" + Switch.getBankStatement(bankA));
         System.out.println(">>>>>>" + Switch.getBankStatement(bankB));

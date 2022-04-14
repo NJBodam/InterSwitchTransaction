@@ -25,12 +25,12 @@ public class Switch extends Thread{
 
         if(transactionType.equals("Debit")) {
             if (amount <= bankA.getBalance()) {
+                collateTransactionVolume(amount);
                 bankA.transact(transactionType, amount, bankB.getName());
                 bankB.transact("Credit", amount, bankA.getName());
                 bankStatement.put(bankA.getName(), bankA.getTransactionHistory());
                 bankStatement.put(bankB.getName(), bankB.getTransactionHistory());
                 System.err.println(Thread.currentThread() + " Transaction Successful");
-                collateTransactionVolume(amount);
             } else {
                 System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankA.getName() + " to " + bankB.getName()
                         + ". Bank Balances: " + bankA.getName() + " :" + bankA.getBalance() + ". " +bankB.getName() + " :" + bankB.getBalance());
@@ -38,12 +38,12 @@ public class Switch extends Thread{
 
         } else if(transactionType.equals("Credit")) {
             if (amount <= bankB.getBalance()) {
+                collateTransactionVolume(amount);
                 bankA.transact(transactionType, amount, bankB.getName());
                 bankB.transact("Debit", amount, bankA.getName());
                 bankStatement.put(bankA.getName(), bankA.getTransactionHistory());
                 bankStatement.put(bankB.getName(), bankB.getTransactionHistory());
                 System.err.println(Thread.currentThread() + " Transaction Successful");
-                collateTransactionVolume(amount);
             } else {
                 System.err.println(Thread.currentThread() + " transaction failed: Credit Transfer of " + amount + " from " + bankB.getName() + " to " + bankA.getName()
                         + ". Bank Balances: " + bankA.getName() + " :" + bankA.getBalance() + ". " +bankB.getName() + " :" + bankB.getBalance());
@@ -53,7 +53,7 @@ public class Switch extends Thread{
     }
 
     private static void collateTransactionVolume(int amount) {
-        transactionVolume.putIfAbsent(LocalDate.now(), amount);
+        transactionVolume.putIfAbsent(LocalDate.now(), 0);
         int currentVolume = transactionVolume.get(LocalDate.now());
         transactionVolume.put(LocalDate.now(), currentVolume + amount);
     }
